@@ -17,15 +17,15 @@ db = SQL("sqlite:///birthdays.db")
 # ketika route "/" dipanggil/diakses, maka fungsi index() dieksekusi
 def index():
     #jika request yang dilakukan oleh pengguna adalah post, maka eksekusi kode dalam if
-    if request.methods == "POST":
+    if request.method == "POST":
 
         # acces form data / membaca data yang diisikan pada form
         name = request.form.get("name") # ambil data dari input name
         month = request.form.get("month") # ambil data dari input month
-        day = request.forn.get("day") # ambil data dari input day
+        day = request.form.get("day") # ambil data dari input day
         
         # insert data into database, masukkan data name, month, dan day ke database
-        db.execute("INSERT INTO birthdays (name, month, day)) VALUES(?, ?, ?)", name, month, day)
+        db.execute("INSERT INTO birthdays (name, month, day) VALUES(?, ?, ?)", name, month, day)
 
         # go back to homepage, balik ke https://127.0.0.1:5000/
         return redirect("/") 
@@ -34,7 +34,7 @@ def index():
     else:
 
         # ambil seluruh data dari tabel birthdays, simpan di variabel birthdays
-        birthdays = db.execute(SELECT * FROM birthdays)
+        birthdays = db.execute("SELECT * FROM birthdays")
 
         # salin isi variabel birthdays ke birthdays, lalu kirim ke index.html
-        return render_template(index.html, birthdays=birthdays)
+        return render_template("index.html", birthdays=birthdays)
